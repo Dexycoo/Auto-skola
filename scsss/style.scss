@@ -1,0 +1,784 @@
+@import "var";
+@import "mixin";
+@import "global";
+
+/**************
+top-bar
+**************/
+.topBar {
+  background-color: $primary;
+  color: $white;
+  padding: 10px 0;
+  text-align: right;
+  @media (max-width: 768px) {
+    display: none;
+  }
+  ul {
+    li {
+      display: inline-block;
+      border-right: 1px solid $white;
+      margin-right: 10px;
+      padding-right: 10px;
+      font-size: 0.8rem;
+      &:last-child {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+      }
+    }
+  }
+
+  i {
+    margin-right: 10px;
+  }
+}
+
+/**************
+navbar
+**************/
+//promenjena je sirina (sa 768px na 1285px) na kojoj se pojavljuje hamburger menu, jer ispod ove se raspada
+nav {
+  padding: 10px 0;
+  position: relative;
+  article {
+    @include flex($y: center);
+  }
+  // dodato, da div sa logoom se prosiri na maksimalno dozvoljenu sirinu ali je slika ogranicena na max 300px sirine
+  .logo {
+    flex: 1;
+    margin-right: 10px;
+    img {
+      max-width: 300px;
+      width: 100%;
+    }
+  }
+  .nav-btn {
+    display: none;
+    @media (max-width: 1285px) {
+      display: block;
+    }
+    button {
+      outline: none;
+      border: none;
+      background: transparent;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  }
+  .navbar {
+    @media (max-width: 1285px) {
+      max-height: 0;
+      overflow-y: auto;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      background-color: $white;
+      z-index: 10;
+      top: 100%;
+      transition: $transition;
+    }
+    & > ul {
+      @media (max-width: 1285px) {
+        display: block;
+      }
+    }
+
+    li {
+      display: inline-block;
+      margin-left: 30px;
+      font-weight: 700;
+      color: $gray;
+      @media (max-width: 1285px) {
+        display: block;
+        margin-left: 0;
+        padding: 10px 15px;
+      }
+      i {
+        margin-left: 30px;
+        @media (max-width: 1285px) {
+          margin-left: 0px;
+          margin-right: 20px;
+        }
+      }
+    }
+    .drop {
+      position: relative;
+      cursor: pointer;
+      &:hover {
+        & > ul {
+          transform: scale(1);
+        }
+      }
+      span::after {
+        content: "\f0d7";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900px;
+        margin-left: 5px;
+      }
+      ul {
+        transform: scale(0);
+        transform-origin: left top;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: $white;
+        padding: 0 10px 10px;
+        min-width: 150px;
+        z-index: 2;
+        transition: transform $transition;
+        @media (max-width: 1285px) {
+          transform: scale(1);
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height $transition;
+          position: relative;
+        }
+        li {
+          width: 100%;
+          padding: 10px;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+/**************
+header
+**************/
+header {
+  @include flex(center, center, column);
+  position: relative;
+  //promenjeno sa height na min-height i dodat padding, ako se ostavi height onda je fiksirana visina, na ovaj nacin na manjim ekranima moze se prosiriti a padding nam obezbedjuje da sadrzaj ne ide od ivice do ivice
+  min-height: 60vh;
+  padding: 20px;
+  img {
+    position: absolute;
+    /* top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; */
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(0.5);
+  }
+  article {
+    color: $white;
+    z-index: 2;
+    text-align: center;
+  }
+
+  h1 {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-size: 3rem;
+    // dodat media query da bi se smanjio font
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+    }
+  }
+  article {
+    div {
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
+  .btn:first-child {
+    margin-right: 10px;
+    @media (max-width: 768px) {
+      margin: 0 10px 10px;
+    }
+  }
+}
+
+/**************
+services 
+**************/
+
+.services {
+  @include flex;
+  article {
+    position: relative;
+    // flex-grow: 0;
+    // flex-shrink: 0;
+    // flex-basis: 32%;
+    flex: 0 0 32%;
+    overflow: hidden;
+    cursor: pointer;
+    // dodat je media query da sa tri kolone predje u dve kolone
+    @media (max-width: 1300px) {
+      flex: 0 0 49%;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) {
+      flex: 0 0 100%;
+      margin-bottom: 20px;
+    }
+    // posto ima tri article da zadnji bude u poravnat po sredini
+    &:last-child {
+      @media (max-width: 1300px) {
+        margin: auto;
+      }
+    }
+    &:hover {
+      h3 {
+        transform: translateY(100%);
+      }
+      div {
+        transform: translateY(-100%);
+      }
+    }
+    h3 {
+      position: absolute;
+      bottom: 0;
+      background-color: rgba($primary, 0.8);
+      width: 100%;
+      color: $white;
+      padding: 5px;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      transition: transform $transition;
+    }
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  div {
+    @include flex(flex-start, flex-start, column);
+    position: absolute;
+    background-color: rgba($primary, 0.8);
+    color: $white;
+    top: 100%;
+    height: 100%;
+    padding: 10px;
+    transition: transform $transition;
+    p {
+      flex: 1;
+    }
+  }
+}
+
+/**************
+features
+**************/
+
+.features {
+  background-color: $lightGray;
+  article:not(:first-child) {
+    @include flex;
+    padding-top: 60px;
+    .wrapper {
+      flex: 0 0 23%;
+      min-width: 200px;
+      background-color: $white;
+      border: 1px solid $gray;
+      border-radius: 5px;
+      padding: 0 20px 20px;
+      text-align: center;
+      // promena sa 768px na 1200px
+      @media (max-width: 1200px) {
+        flex: 0 0 49%;
+        margin-top: 50px;
+      }
+      @media (max-width: 450px) {
+        flex: 0 0 100%;
+      }
+    }
+    h6 {
+      font-size: 1.2rem;
+    }
+    p {
+      margin-top: 10px;
+    }
+    // deo koda odavde je prebacen u global.scss
+    .rotate-icon {
+      margin-bottom: 30px;
+      margin-top: -1em;
+    }
+  }
+}
+
+/**************
+courses
+**************/
+
+.courses {
+  .title-section {
+    margin-bottom: 40px;
+  }
+  .wrapper {
+    @include flex;
+    &:last-child {
+      margin-top: 40px;
+    }
+    & > .btn {
+      margin: 0 auto;
+    }
+    .card {
+      flex: 0 0 23%;
+      // promena sa 768px na 1200px
+      @media (max-width: 1200px) {
+        flex: 0 0 49%;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 500px) {
+        flex: 0 0 100%;
+      }
+    }
+  }
+
+  &-page {
+    @media (max-width: 1170px) and (min-width: 768px) {
+      @include flex;
+      .card {
+        flex: 0 0 48%;
+        img {
+          max-width: unset;
+        }
+      }
+    }
+  }
+}
+
+/**************
+news
+**************/
+
+.news {
+  .wrapper {
+    @include flex;
+    margin-top: 50px;
+    .card {
+      flex: 0 0 32%;
+      // promena sa 768px na 1200px
+      @media (max-width: 1200px) {
+        flex: 0 0 49%;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 450px) {
+        flex: 0 0 100%;
+      }
+      h6 {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+
+/**************
+cta
+**************/
+.cta {
+  background: linear-gradient(rgba($black, 0.8), rgba($black, 0.8)),
+    url("img/testimonial-bg-01.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: $white;
+
+  form {
+    margin-top: 40px;
+    text-align: center;
+    div {
+      @include flex;
+    }
+    input {
+      flex: 0 0 23%;
+      padding: 15px;
+      font-family: $textFont;
+      font-size: 1rem;
+      // dodat jos jedan media query a margin-botom prebacen u gornji jer za svaku manju sirinu ekrana nasledjuje iz veceg
+      @media (max-width: 1490px) {
+        flex: 0 0 49%;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 768px) {
+        flex: 0 0 100%;
+      }
+    }
+    button {
+      outline: transparent;
+      border: transparent;
+      margin: 30px 0 0;
+      font-size: 1.2rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+/**************
+map
+**************/
+
+.map {
+  position: relative;
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba($black, 0.5), rgba($black, 0.5));
+  }
+  iframe {
+    width: 100%;
+  }
+  // dodata je animacija na ikonicu u mapi
+  .rotate-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    cursor: pointer;
+    a {
+      display: block;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+    &:hover {
+      a {
+        animation-name: jumping;
+        color: $white;
+      }
+    }
+  }
+}
+// ova animacija ima tri faze
+// 0% - pocetna faza i pomera se na gore za 10% svoje visine
+// 10% - druga faza i pomera se na dole za 10% svoje visine od inicijalne pozicije
+// 100% - zavrsna faza i pomera se na gore za 10% svoje visine od inicijalne pozicije
+// ova animacija se ponavlja u beskonacnosti sve dok je kursor na ovom elementu animation-iteration-count: infinite;
+@keyframes jumping {
+  0% {
+    transform: translateY(-10%);
+  }
+  50% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(-10%);
+  }
+}
+
+/**************
+footer
+**************/
+
+footer {
+  background-color: $darkGray;
+  color: $white;
+  article {
+    padding: 50px 0;
+    &:first-child {
+      @include flex;
+    }
+    &:last-child {
+      background-color: $black;
+      text-align: center;
+      padding: 30px 0;
+    }
+    div {
+      @media (max-width: 768px) {
+        flex: 0 0 49%;
+        margin-bottom: 20px;
+      }
+
+      &:first-child {
+        flex: 0 0 48%;
+        // promena sa 768px na 1160px
+        @media (max-width: 1160px) {
+          flex: 0 0 100%;
+          margin-bottom: 20px;
+        }
+        p {
+          line-height: 2;
+        }
+      }
+      h3 {
+        text-transform: uppercase;
+        margin-bottom: 40px;
+      }
+      img {
+        margin-bottom: 20px;
+      }
+      li {
+        line-height: 1.9;
+        // dodato da bi ikonice odvojili od teksta
+        i {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+/**************
+single page
+**************/
+
+.single {
+  @include flex;
+  article {
+    @include flex;
+    flex: 1;
+    h2 {
+      text-transform: uppercase;
+      font-size: 2rem;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    iframe {
+      height: 450px;
+      margin: 20px 0;
+    }
+    p {
+      margin: 20px 0;
+      line-height: 1.7;
+    }
+    ul {
+      margin-bottom: 20px;
+      li {
+        line-height: 1.7;
+        &::before {
+          content: "\f0a4";
+          font-family: "Font Awesome 5 Free";
+          font-weight: 900;
+          color: $primary;
+          margin-right: 5px;
+        }
+      }
+    }
+    .feature {
+      border-left: 5px solid rgba($gray, 0.5);
+      padding-left: 30px;
+    }
+  }
+  aside {
+    flex: 0 0 25%;
+    margin-left: 30px;
+
+    @media (max-width: 1300px) {
+      flex: 0 0 100%;
+      margin-left: 0;
+      margin-top: 20px;
+    }
+  }
+  .categories {
+    h3 {
+      text-transform: uppercase;
+    }
+    ul {
+      margin-top: 30px;
+      li {
+        line-height: 2.5;
+        border-top: 1px solid $gray;
+        &:last-child {
+          border-bottom: 1px solid $gray;
+        }
+      }
+    }
+  }
+  .news {
+    .card {
+      flex: 0 0 48%;
+      margin-bottom: 30px;
+      @media (max-width: 768px) {
+        flex: 0 0 100%;
+      }
+    }
+  }
+  &-teacher {
+    @media (max-width: 1300px) {
+      order: 1;
+      margin-top: 20px;
+    }
+  }
+  &-courses {
+    .card {
+      width: 100%;
+      h6 {
+        span {
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  // dodato znak + (adjacent sibling selector) predstavlja nacin da selektujemo prvi susedni element koji je naveden nakon njega (aside)
+  // ovo je dodato da bi aside odnosno profil instruktora kada predje sa donje ili gornje strane u pocetku slika bude sa leve strane a tekst sa desne a ako se sirina ekrana jos smanjuje onda tekst prelazi sa donje strane slike
+  &-teacher + aside,
+  &-courses + aside {
+    .card {
+      @include flex;
+      @media (max-width: 550px) {
+        flex-direction: column;
+      }
+      img {
+        max-width: 250px;
+        object-fit: cover;
+        object-position: center top;
+        @media (max-width: 550px) {
+          max-width: unset;
+        }
+      }
+    }
+  }
+}
+
+/**************
+intro
+**************/
+
+.intro {
+  @include flex;
+  article {
+    flex: 0 0 48%;
+    // promena sa 768px na 1400px
+    @media (max-width: 1400px) {
+      flex: 0 0 100%;
+      margin-bottom: 20px;
+    }
+    .title-section {
+      text-align: left;
+      h2 {
+        &::after {
+          margin: 10px 0;
+        }
+      }
+    }
+    ul {
+      margin-top: 20px;
+      li {
+        line-height: 1.7;
+        &::before {
+          content: "\f058";
+          font-family: "Font Awesome 5 Free";
+          font-weight: 900;
+          color: $primary;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+/**************
+teachers
+**************/
+
+.teachers {
+  .row {
+    @include flex;
+    margin-top: 50px;
+    .card {
+      flex: 0 0 24%;
+
+      @media (max-width: 1360px) {
+        flex: 0 0 49%;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 768px) {
+        flex: 0 0 100%;
+      }
+    }
+  }
+}
+
+/**************
+gallery
+**************/
+
+.gallery {
+  @include flex($x: space-around);
+  article {
+    cursor: pointer;
+    overflow: hidden;
+
+    flex: 1 0 32%; //prvi parametar (1) oznacava da se svaki article siri do maksimalne sirine od 32%
+    margin: 0 5px 10px; //5px predstavlja obezbedjuje da savki article ima razmak sa leve i desne strane, 10px je da ima razmak sa donje strane
+    min-width: 260px; //minimalna sirina article sto obezbedjuje da kada article dodje do te sirine predje u donji red a ne da se smanjuje
+    max-width: 390px; //maksimalna sirina article sto obezbedjuje da ne bude previse sirok pogotovo zadnja dva
+    @media (max-width: 768px) {
+      flex: 0 0 100%;
+    }
+    &:hover {
+      img {
+        transform: scale(110%);
+      }
+    }
+    img {
+      width: 100%;
+      display: block;
+      transition: transform $transition;
+    }
+  }
+}
+
+/**************
+contact
+**************/
+
+.contact {
+  @include flex;
+  article {
+    &:first-child {
+      flex: 1;
+    }
+    &:last-child {
+      flex: 0 0 38%;
+      margin-left: 2%;
+      @media (max-width: 768px) {
+        flex: 0 0 100%;
+        margin-left: 0;
+        margin-top: 30px;
+      }
+    }
+    h3 {
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      color: $primary;
+      font-size: 2rem;
+    }
+
+    form {
+      @include flex;
+      input {
+        flex: 0 0 32%;
+        margin-bottom: 20px;
+        padding: 10px;
+        // promenjena vrednost sa 768px na 1510px
+        @media (max-width: 1510px) {
+          flex: 0 0 100%;
+        }
+      }
+      textarea {
+        padding: 10px;
+        margin-bottom: 20px;
+        flex: 0 0 100%;
+      }
+      button {
+        outline: none;
+        border: none;
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+      }
+    }
+    ul {
+      margin-top: 20px;
+      li {
+        line-height: 1.8;
+        i {
+          margin-right: 5px;
+          color: $primary;
+        }
+      }
+    }
+  }
+}
